@@ -16,7 +16,7 @@ function App() {
   }, []);
 
   const submitRecipe = () => {
-    Axios.post("https://localhost:3003/api/insert", {
+    Axios.post("http://localhost:3003/api/insert", {
       recipeName: recipeName,
       recipeTime: recipeTime,
       recipeInstructions: recipeInstructions,

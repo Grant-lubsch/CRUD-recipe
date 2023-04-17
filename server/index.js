@@ -32,9 +32,10 @@ app.post("/api/insert", (req, res) => {
     "INSERT INTO recipes (recipeName, recipeTime, recipeIngredients, recipeInstructions) VALUES (?, ?, ?, ?)";
   db.query(
     sqlInsert,
-    [recipeName, recipeTime, recipeIngredient, recipeInstructions],
+    [recipeName, recipeTime, recipeIngredients, recipeInstructions],
     (err, result) => {
       console.log(result);
+      res.send("Recipe successfully inserted");
     }
   );
 });
