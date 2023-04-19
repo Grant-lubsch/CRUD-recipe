@@ -46,6 +46,7 @@ app.delete("/api/delete/:recipeName", (req, res) => {
 
   db.query(sqlDelete, name, (err, result) => {
     if (err) console.log(err);
+    res.send("Recipe successfully deleted");
   });
 });
 
@@ -57,6 +58,7 @@ app.put("/api/update", (req, res) => {
 
   db.query(sqlUpdate, [instructions, name], (err, result) => {
     if (err) console.log(err);
+    res.send("Recipe successfully updated");
   });
 });
 

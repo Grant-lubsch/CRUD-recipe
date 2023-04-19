@@ -36,13 +36,26 @@ function App() {
   };
 
   const deleteRecipe = (recipe) => {
-    Axios.delete(`http://localhost:3003/api/delete/${recipe}`);
+    Axios.delete(`http://localhost:3003/api/delete/${recipe}`).then(
+      (response) => {
+        setRecipeList(recipeList.filter((val) => val.recipeName !== recipe));
+      }
+    );
   };
 
   const updateRecipe = (recipe) => {
     Axios.put("http://localhost:3003/api/update", {
       recipeName: recipe,
       recipeInstructions: newInstructions,
+    }).then((response) => {
+      setRecipeList(
+        recipeList.map((val) => {
+          if (val.recipeName === recipe) {
+            val.recipeInstructions = newInstructions;
+          }
+          return val;
+        })
+      );
     });
     setNewInstructions("");
   };
