@@ -9,6 +9,8 @@ function App() {
   const [recipeInstructions, setRecipeInstructions] = useState("");
   const [recipeList, setRecipeList] = useState([]);
   const [newInstructions, setNewInstructions] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   useEffect(() => {
     Axios.get("http://localhost:3003/api/get").then((response) => {
@@ -59,6 +61,39 @@ function App() {
     });
     setNewInstructions("");
   };
+
+  const handleClick = (event) => {
+    const id = event.target.id;
+    if (id === "prev" && currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    } else if (id === "next" && currentPage < pageNumbers.length) {
+      setCurrentPage(currentPage + 1);
+    } else if (!isNaN(id)) {
+      setCurrentPage(Number(id));
+    }
+  };
+
+  const handleNext = () => {
+    setCurrentPage((page) => page + 1);
+  };
+
+  const handlePrev = () => {
+    setCurrentPage((page) => page - 1);
+  };
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = recipeList.slice(indexOfFirstItem, indexOfLastItem);
+
+  const pageNumbers = [];
+
+  for (
+    let i = Math.max(1, currentPage - 2);
+    i <= Math.min(currentPage + 2, Math.ceil(recipeList.length / itemsPerPage));
+    i++
+  ) {
+    pageNumbers.push(i);
+  }
 
   return (
     <div className="App">
@@ -113,6 +148,7 @@ function App() {
               <input
                 type="text"
                 id="updateInput"
+                value="UPDATE RECIPE INSTRUCTIONS HERE:"
                 onChange={(e) => {
                   setNewInstructions(e.target.value);
                 }}
@@ -127,6 +163,51 @@ function App() {
             </div>
           );
         })}
+      </div>
+      <div className="pagination">
+        <nav>
+          <ul className="pagination">
+            <li
+              className={currentPage === 1 ? "page-item disabled" : "page-item"}
+            >
+              <button className="page-link" onClick={handlePrev}>
+                Previous
+              </button>
+            </li>
+            {pageNumbers.map((number) => {
+              if (number < currentPage - 1 || number > currentPage + 1) {
+                return null;
+              }
+              return (
+                <li
+                  key={number}
+                  className={
+                    currentPage === number ? "page-item active" : "page-item"
+                  }
+                >
+                  <button
+                    className="page-link"
+                    id={number}
+                    onClick={handleClick}
+                  >
+                    {number}
+                  </button>
+                </li>
+              );
+            })}
+            <li
+              className={
+                currentPage === pageNumbers.length
+                  ? "page-item disabled"
+                  : "page-item"
+              }
+            >
+              <button className="page-link" onClick={handleNext}>
+                Next
+              </button>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
   );

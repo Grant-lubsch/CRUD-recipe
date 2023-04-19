@@ -84,3 +84,47 @@ input#updateInput {
     width: 100%;
   }
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.pagination li {
+  display: inline-block;
+  margin: 0 5px;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  text-align: center;
+}
+
+.pagination li.active {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+
+.pagination li.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination .prev,
+.pagination .next {
+  display: inline-block;
+  margin: 0 5px;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.pagination .prev:hover,
+.pagination .next:hover {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+  cursor: pointer;
+}
