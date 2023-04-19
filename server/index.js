@@ -40,6 +40,26 @@ app.post("/api/insert", (req, res) => {
   );
 });
 
+app.delete("/api/delete/:recipeName", (req, res) => {
+  const name = req.params.recipeName;
+  const sqlDelete = "DELETE FROM recipes WHERE recipeName = ?";
+
+  db.query(sqlDelete, name, (err, result) => {
+    if (err) console.log(err);
+  });
+});
+
+app.put("/api/update", (req, res) => {
+  const name = req.body.recipeName;
+  const instructions = req.body.recipeInstructions;
+  const sqlUpdate =
+    "UPDATE recipes SET recipeInstructions = ? WHERE recipeInstructions = ?";
+
+  db.query(sqlUpdate, [instructions, name], (err, result) => {
+    if (err) console.log(err);
+  });
+});
+
 app.listen(3003, () => {
   console.log("running on port 3003");
 });
