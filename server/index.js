@@ -53,7 +53,7 @@ app.put("/api/update", (req, res) => {
   const name = req.body.recipeName;
   const instructions = req.body.recipeInstructions;
   const sqlUpdate =
-    "UPDATE recipes SET recipeInstructions = ? WHERE recipeInstructions = ?";
+    "UPDATE recipes SET recipeInstructions = ? WHERE recipeName = ?";
 
   db.query(sqlUpdate, [instructions, name], (err, result) => {
     if (err) console.log(err);
