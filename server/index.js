@@ -40,26 +40,33 @@ app.post("/api/insert", (req, res) => {
   );
 });
 
-app.delete("/api/delete/:recipeName", (req, res) => {
-  const name = req.params.recipeName;
-  const sqlDelete = "DELETE FROM recipes WHERE recipeName = ?";
+app.delete("/api/delete/:id", (req, res) => {
+  const id = req.params.id;
+  const sqlDelete = "DELETE FROM recipes WHERE id = ?";
 
-  db.query(sqlDelete, name, (err, result) => {
+  db.query(sqlDelete, id, (err, result) => {
     if (err) console.log(err);
     res.send("Recipe successfully deleted");
   });
 });
 
-app.put("/api/update", (req, res) => {
-  const name = req.body.recipeName;
-  const instructions = req.body.recipeInstructions;
-  const sqlUpdate =
-    "UPDATE recipes SET recipeInstructions = ? WHERE recipeName = ?";
+app.put("/api/update/:id", (req, res) => {
+  const id = req.params.id;
+  const name = req.body.name;
+  const time = req.body.time;
+  const ingredients = req.body.ingredients;
+  const instructions = req.body.instructions;
 
-  db.query(sqlUpdate, [instructions, name], (err, result) => {
-    if (err) console.log(err);
-    res.send("Recipe successfully updated");
-  });
+  const sqlUpdate =
+    "UPDATE recipes SET recipeName=?, recipeTime=?, recipeIngredients=?, recipeInstructions=? WHERE id=?";
+  db.query(
+    sqlUpdate,
+    [name, time, ingredients, instructions, id],
+    (err, result) => {
+      console.log(result);
+      res.send("Recipe successfully updated");
+    }
+  );
 });
 
 app.listen(3003, () => {

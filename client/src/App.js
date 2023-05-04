@@ -3,12 +3,13 @@ import "./App.css";
 import Axios from "axios";
 
 function App() {
-  const [recipeName, setRecipeName] = useState("");
-  const [recipeTime, setRecipeTime] = useState("");
-  const [recipeIngredients, setRecipeIngredients] = useState("");
-  const [recipeInstructions, setRecipeInstructions] = useState("");
+  const [name, setName] = useState("");
+  const [time, setTime] = useState("");
+  const [ingredients, setIngredients] = useState("");
+  const [instructions, setInstructions] = useState("");
+  const [editing, setEditing] = useState(false);
+  const [editId, setEditId] = useState(null);
   const [recipeList, setRecipeList] = useState([]);
-  const [newInstructions, setNewInstructions] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
@@ -20,32 +21,64 @@ function App() {
 
   const submitRecipe = () => {
     Axios.post("http://localhost:3003/api/insert", {
-      recipeName: recipeName,
-      recipeTime: recipeTime,
-      recipeInstructions: recipeInstructions,
-      recipeIngredients: recipeIngredients,
+      name: name,
+      time: time,
+      instructions: instructions,
+      ingredients: ingredients,
+    }).then(() => {
+      setRecipeList([
+        ...recipeList,
+        {
+          recipeName: name,
+          recipeTime: time,
+          recipeInstructions: instructions,
+          recipeIngredients: ingredients,
+        },
+      ]);
+      setName("");
+      setTime("");
+      setIngredients("");
+      setInstructions("");
     });
-
-    setRecipeList([
-      ...recipeList,
-      {
-        recipeName: recipeName,
-        recipeTime: recipeTime,
-        recipeInstructions: recipeInstructions,
-        recipeIngredients: recipeIngredients,
-      },
-    ]);
   };
 
-  const deleteRecipe = (recipe) => {
-    Axios.delete(`http://localhost:3003/api/delete/${recipe}`).then(
-      (response) => {
-        setRecipeList(recipeList.filter((val) => val.recipeName !== recipe));
-      }
-    );
+  const deleteRecipe = (id) => {
+    Axios.delete(`http://localhost:3003/api/delete/${id}`).then(() => {
+      Axios.get("http://localhost:3003/api/get").then((response) => {
+        setRecipeList(response.data);
+      });
+    });
   };
 
-  const updateRecipe = (recipe) => {
+  const handleUpdate = (id) => {
+    setEditing(true);
+    setEditId(id);
+    const recipeToUpdate = recipeList.find((val) => val.id === id);
+    setName(recipeToUpdate.recipeName);
+    setTime(recipeToUpdate.recipeTime);
+    setIngredients(recipeToUpdate.recipeIngredients);
+    setInstructions(recipeToUpdate.recipeInstructions);
+  };
+
+  const handleUpdateSubmit = () => {
+    Axios.put(`http://localhost:3003/api//update/${editId}`, {
+      name: name,
+      time: time,
+      ingredients: ingredients,
+      instructions: instructions,
+    }).then(() => {
+      setName("");
+      setTime("");
+      setIngredients("");
+      setInstructions("");
+      setEditId(null);
+      setEditing(false);
+      Axios.get("http://localhost:3003/api/get").then((response) => {
+        setRecipeList(response.data);
+      });
+    });
+  };
+  /*  const updateRecipe = (recipe) => {
     Axios.put("http://localhost:3003/api/update", {
       recipeName: recipe,
       recipeInstructions: newInstructions,
@@ -61,7 +94,7 @@ function App() {
     });
     setNewInstructions("");
   };
-
+*/
   const handleClick = (event) => {
     const id = event.target.id;
     if (id === "prev" && currentPage > 1) {
@@ -104,7 +137,7 @@ function App() {
           type="text"
           name="recipeName"
           onChange={(e) => {
-            setRecipeName(e.target.value);
+            setName(e.target.value);
           }}
         />
         <label>Time to Cook:</label>
@@ -112,7 +145,7 @@ function App() {
           type="text"
           name="recipeTime"
           onChange={(e) => {
-            setRecipeTime(e.target.value);
+            setTime(e.target.value);
           }}
         />
         <label>Ingredients:</label>
@@ -120,7 +153,7 @@ function App() {
           type="text"
           name="recipeIngredients"
           onChange={(e) => {
-            setRecipeIngredients(e.target.value);
+            setIngredients(e.target.value);
           }}
         />
         <label>Instructions:</label>
@@ -128,11 +161,15 @@ function App() {
           type="text"
           name="recipeInstructions"
           onChange={(e) => {
-            setRecipeInstructions(e.target.value);
+            setInstructions(e.target.value);
           }}
         />
 
-        <button onClick={submitRecipe}>Submit</button>
+        {editing ? (
+          <button onClick={handleUpdateSubmit}>Update Recipe</button>
+        ) : (
+          <button onClick={submitRecipe}>Submit Recipe</button>
+        )}
 
         {recipeList.map((val) => {
           return (
@@ -141,25 +178,9 @@ function App() {
               <p>Time to Cook: {val.recipeTime}</p>
               <p>Recipe Ingredients: {val.recipeIngredients}</p>
               <p>Recipe Instructions: {val.recipeInstructions}</p>
-
-              <button onClick={() => deleteRecipe(val.recipeName)}>
-                Delete
-              </button>
-              <input
-                type="text"
-                id="updateInput"
-                value="UPDATE RECIPE INSTRUCTIONS HERE:"
-                onChange={(e) => {
-                  setNewInstructions(e.target.value);
-                }}
-              />
-              <button
-                onClick={() => {
-                  updateRecipe(val.recipeName);
-                }}
-              >
-                Update
-              </button>
+              <button onClick={() => deleteRecipe(val.id)}>Delete</button>
+              &nbsp;&nbsp;&nbsp;
+              <button onClick={() => handleUpdate(val.id)}>Update</button>
             </div>
           );
         })}
