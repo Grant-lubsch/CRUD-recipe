@@ -23,16 +23,16 @@ app.get("/api/get", (req, res) => {
 });
 
 app.post("/api/insert", (req, res) => {
-  const recipeName = req.body.recipeName;
-  const recipeTime = req.body.recipeTime;
-  const recipeIngredients = req.body.recipeIngredients;
-  const recipeInstructions = req.body.recipeInstructions;
+  const name = req.body.name;
+  const time = req.body.time;
+  const ingredients = req.body.ingredients;
+  const instructions = req.body.instructions;
 
   const sqlInsert =
     "INSERT INTO recipes (recipeName, recipeTime, recipeIngredients, recipeInstructions) VALUES (?, ?, ?, ?)";
   db.query(
     sqlInsert,
-    [recipeName, recipeTime, recipeIngredients, recipeInstructions],
+    [name, time, ingredients, instructions],
     (err, result) => {
       console.log(result);
       res.send("Recipe successfully inserted");

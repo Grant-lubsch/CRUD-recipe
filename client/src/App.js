@@ -61,7 +61,7 @@ function App() {
   };
 
   const handleUpdateSubmit = () => {
-    Axios.put(`http://localhost:3003/api//update/${editId}`, {
+    Axios.put(`http://localhost:3003/api/update/${editId}`, {
       name: name,
       time: time,
       ingredients: ingredients,
@@ -136,6 +136,7 @@ function App() {
         <input
           type="text"
           name="recipeName"
+          value={name}
           onChange={(e) => {
             setName(e.target.value);
           }}
@@ -144,6 +145,7 @@ function App() {
         <input
           type="text"
           name="recipeTime"
+          value={time}
           onChange={(e) => {
             setTime(e.target.value);
           }}
@@ -152,6 +154,7 @@ function App() {
         <input
           type="text"
           name="recipeIngredients"
+          value={ingredients}
           onChange={(e) => {
             setIngredients(e.target.value);
           }}
@@ -160,6 +163,7 @@ function App() {
         <input
           type="text"
           name="recipeInstructions"
+          value={instructions}
           onChange={(e) => {
             setInstructions(e.target.value);
           }}
