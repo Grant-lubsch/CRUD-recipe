@@ -130,7 +130,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>CRUD Recipe List</h1>
+      <h1>Recipe List</h1>
       <div className="form">
         <label>Recipe:</label>
         <input
