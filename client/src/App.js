@@ -78,23 +78,7 @@ function App() {
       });
     });
   };
-  /*  const updateRecipe = (recipe) => {
-    Axios.put("http://localhost:3003/api/update", {
-      recipeName: recipe,
-      recipeInstructions: newInstructions,
-    }).then((response) => {
-      setRecipeList(
-        recipeList.map((val) => {
-          if (val.recipeName === recipe) {
-            val.recipeInstructions = newInstructions;
-          }
-          return val;
-        })
-      );
-    });
-    setNewInstructions("");
-  };
-*/
+
   const handleClick = (event) => {
     const id = event.target.id;
     if (id === "prev" && currentPage > 1) {
