@@ -154,7 +154,7 @@ function App() {
         />
 
         {editing ? (
-          <button onClick={handleUpdateSubmit}>Update Recipe</button>
+          <button onClick={handleUpdateSubmit}>Edit Recipe</button>
         ) : (
           <button onClick={submitRecipe}>Submit Recipe</button>
         )}
