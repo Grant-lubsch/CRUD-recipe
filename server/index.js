@@ -3,13 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 const mysql = require("mysql");
-
-const db = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  password: "AsDfGh12!",
-  database: "CRUD_Recipes",
-});
+const PORT = process.env.PORT || 3030;
 
 app.use(cors());
 app.use(express.json());
@@ -69,6 +63,6 @@ app.put("/api/update/:id", (req, res) => {
   );
 });
 
-app.listen(3003, () => {
-  console.log("running on port 3003");
+app.listen(PORT, () => {
+  console.log(`server started on port ${PORT}`);
 });
