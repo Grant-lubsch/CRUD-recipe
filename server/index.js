@@ -70,6 +70,6 @@ app.put("/api/update/:id", (req, res) => {
   );
 });
 
-app.listen(PORT, () => {
-  console.log(`server started on port ${PORT}`);
+app.listen(3003, () => {
+  console.log(`server started on port 3003`);
 });
