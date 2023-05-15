@@ -5,6 +5,13 @@ const app = express();
 const mysql = require("mysql");
 //const PORT = process.env.PORT || 3030;
 
+const db = mysql.createPool({
+  host: "localhost",
+  user: "root",
+  password: "AsDfGh12!",
+  database: "CRUD_Recipes",
+});
+
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
