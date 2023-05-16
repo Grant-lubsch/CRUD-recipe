@@ -6,10 +6,10 @@ const mysql = require("mysql");
 //const PORT = process.env.PORT || 3030;
 
 const db = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  password: "AsDfGh12!",
-  database: "CRUD_Recipes",
+  host: process.env.DB_HOST || "localhost",
+  user: process.env.DB_USERNAME || "root",
+  password: process.env.DB_PASSWORD || "AsDfGh12!",
+  database: process.env.DB_INSTANCE_NAME || "CRUD_Recipes",
 });
 
 app.use(cors());
