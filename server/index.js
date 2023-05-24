@@ -4,7 +4,7 @@ const cors = require("cors");
 const path = require("path");
 const app = express();
 const mysql = require("mysql");
-//const PORT = process.env.PORT || 3030;
+/onst PORT = process.env.PORT || 3030;
 
 const db = mysql.createPool({
   host: process.env.DB_HOST || "localhost",
@@ -75,9 +75,10 @@ app.put("/api/update/:id", (req, res) => {
     }
   );
 });
+var myPort = process.env.PORT || 3003;
 
-app.listen(3003, () => {
-  console.log(`server started on port 3003`);
+app.listen(myPort, () => {
+  console.log(`server started on port ` + myPort);
   console.log(`connected to DB with DB_HOST: ` + process.env.DB_HOST);
   console.log(`connected to DB with DB_USERNAME: ` + process.env.DB_USERNAME);
 });
