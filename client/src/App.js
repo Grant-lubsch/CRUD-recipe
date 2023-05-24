@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import Axios from "axios";
+import axios from "axios";
 
 function App() {
   const [name, setName] = useState("");
@@ -13,38 +13,42 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
+  axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
+
   useEffect(() => {
-    Axios.get("http://localhost:3003/api/get").then((response) => {
+    axios.get("/api/get").then((response) => {
       setRecipeList(response.data);
     });
   }, []);
 
   const submitRecipe = () => {
-    Axios.post("http://localhost:3003/api/insert", {
-      name: name,
-      time: time,
-      instructions: instructions,
-      ingredients: ingredients,
-    }).then(() => {
-      setRecipeList([
-        ...recipeList,
-        {
-          recipeName: name,
-          recipeTime: time,
-          recipeInstructions: instructions,
-          recipeIngredients: ingredients,
-        },
-      ]);
-      setName("");
-      setTime("");
-      setIngredients("");
-      setInstructions("");
-    });
+    axios
+      .post("/api/insert", {
+        name: name,
+        time: time,
+        instructions: instructions,
+        ingredients: ingredients,
+      })
+      .then(() => {
+        setRecipeList([
+          ...recipeList,
+          {
+            recipeName: name,
+            recipeTime: time,
+            recipeInstructions: instructions,
+            recipeIngredients: ingredients,
+          },
+        ]);
+        setName("");
+        setTime("");
+        setIngredients("");
+        setInstructions("");
+      });
   };
 
   const deleteRecipe = (id) => {
-    Axios.delete(`http://localhost:3003/api/delete/${id}`).then(() => {
-      Axios.get("http://localhost:3003/api/get").then((response) => {
+    axios.delete(`/api/delete/${id}`).then(() => {
+      axios.get("/api/get").then((response) => {
         setRecipeList(response.data);
       });
     });
@@ -61,22 +65,24 @@ function App() {
   };
 
   const handleUpdateSubmit = () => {
-    Axios.put(`http://localhost:3003/api/update/${editId}`, {
-      name: name,
-      time: time,
-      ingredients: ingredients,
-      instructions: instructions,
-    }).then(() => {
-      setName("");
-      setTime("");
-      setIngredients("");
-      setInstructions("");
-      setEditId(null);
-      setEditing(false);
-      Axios.get("http://localhost:3003/api/get").then((response) => {
-        setRecipeList(response.data);
+    axios
+      .put(`/api/update/${editId}`, {
+        name: name,
+        time: time,
+        ingredients: ingredients,
+        instructions: instructions,
+      })
+      .then(() => {
+        setName("");
+        setTime("");
+        setIngredients("");
+        setInstructions("");
+        setEditId(null);
+        setEditing(false);
+        axios.get("/api/get").then((response) => {
+          setRecipeList(response.data);
+        });
       });
-    });
   };
 
   const handleClick = (event) => {
@@ -158,21 +164,21 @@ function App() {
         ) : (
           <button onClick={submitRecipe}>Submit Recipe</button>
         )}
-
-        {recipeList.map((val) => {
-          return (
-            <div className="card">
-              <h1>{val.recipeName}</h1>
-              <p>Time to Cook: {val.recipeTime}</p>
-              <p>Recipe Ingredients: {val.recipeIngredients}</p>
-              <p>Recipe Instructions: {val.recipeInstructions}</p>
-              <button onClick={() => deleteRecipe(val.id)}>Delete</button>
-              &nbsp;&nbsp;&nbsp;
-              <button onClick={() => handleUpdate(val.id)}>Update</button>
-            </div>
-          );
-        })}
       </div>
+      {recipeList.map((val) => {
+        return (
+          <div className="card">
+            <h1>{val.recipeName}</h1>
+            <p>Time to Cook: {val.recipeTime}</p>
+            <p>Recipe Ingredients: {val.recipeIngredients}</p>
+            <p>Recipe Instructions: {val.recipeInstructions}</p>
+            <button onClick={() => deleteRecipe(val.id)}>Delete</button>
+            &nbsp;&nbsp;&nbsp;
+            <button onClick={() => handleUpdate(val.id)}>Update</button>
+          </div>
+        );
+      })}
+
       <div className="pagination">
         <nav>
           <ul className="pagination">
