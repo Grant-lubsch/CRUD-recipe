@@ -13,7 +13,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
-  axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
+  axios.defaults.baseURL = process.env.REACT_APP_BASE_URL || "/";
 
   useEffect(() => {
     axios.get("/api/get").then((response) => {
