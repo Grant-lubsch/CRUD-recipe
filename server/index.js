@@ -72,4 +72,6 @@ app.put("/api/update/:id", (req, res) => {
 
 app.listen(3003, () => {
   console.log(`server started on port 3003`);
+  console.log(`connected to DB with DB_HOST: ` + process.env.DB_HOST);
+  console.log(`connected to DB with DB_USERNAME: ` + process.env.DB_USERNAME);
 });
