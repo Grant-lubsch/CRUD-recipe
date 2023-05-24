@@ -13,8 +13,8 @@ const db = mysql.createPool({
 });
 
 app.use(cors());
-app.use(express.json());
 app.use(express.static(path.join(__dirname, "build")));
+app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", function(req, res) {
@@ -22,13 +22,19 @@ app.get("/", function(req, res) {
 });
 
 app.get("/api/get", (req, res) => {
+  console.log("-- GET /api/get");
+
   const sqlSelect = "SELECT * FROM recipes";
   db.query(sqlSelect, (err, result) => {
+    console.log("Got result: " + result);
+
     res.send(result);
   });
 });
 
 app.post("/api/insert", (req, res) => {
+  console.log("-- POST /api/insert");
+
   const name = req.body.name;
   const time = req.body.time;
   const ingredients = req.body.ingredients;
