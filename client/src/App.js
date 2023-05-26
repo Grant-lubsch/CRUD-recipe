@@ -167,7 +167,7 @@ function App() {
         return (
           <div className="card">
             <h1>{val.recipeName}</h1>
-            <p>Time to Cook: {val.recipeTime}</p>
+            <p>Cook Time: {val.recipeTime}</p>
             <p>Recipe Ingredients: {val.recipeIngredients}</p>
             <p>Recipe Instructions: {val.recipeInstructions}</p>
             <button onClick={() => deleteRecipe(val.id)}>Delete</button>
