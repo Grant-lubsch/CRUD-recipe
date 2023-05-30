@@ -118,7 +118,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Recipe List</h1>
+      <h1>Uncle Grant's Recipe Book</h1>
       <div className="form">
         <label>Recipe:</label>
         <input
