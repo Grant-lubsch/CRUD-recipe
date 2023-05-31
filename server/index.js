@@ -9,7 +9,7 @@ const db = mysql.createPool({
   host: process.env.DB_HOST || "localhost",
   user: process.env.DB_USERNAME || "root",
   password: process.env.DB_PASSWORD,
-  database: "CRUD_Recipes",
+  database: process.env.DB_SCHEMA || "CRUD_recipes",
 });
 
 app.use(cors());
@@ -25,9 +25,8 @@ app.get("/api/get", (req, res) => {
   console.log("-- GET /api/get");
 
   const sqlSelect = "SELECT * FROM recipes";
-  db.query(sqlSelect, (err, result) => {
-    console.log("Got result: " + result);
 
+  db.query(sqlSelect, (err, result) => {
     res.send(result);
   });
 });
