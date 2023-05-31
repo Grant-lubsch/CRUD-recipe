@@ -27,6 +27,9 @@ app.get("/api/get", (req, res) => {
   const sqlSelect = "SELECT * FROM recipes";
 
   db.query(sqlSelect, (err, result) => {
+    console.log("db result:" + result);
+    console.log("err:" + err);
+
     res.send(result);
   });
 });
