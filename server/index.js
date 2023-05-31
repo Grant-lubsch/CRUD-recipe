@@ -85,4 +85,5 @@ app.listen(myPort, () => {
   console.log(`server started on port ` + myPort);
   console.log(`connected to DB with DB_HOST: ` + process.env.DB_HOST);
   console.log(`connected to DB with DB_USERNAME: ` + process.env.DB_USERNAME);
+  console.log(`connected to DB with DB_SCHEMA: ` + process.env.DB_SCHEMA);
 });
